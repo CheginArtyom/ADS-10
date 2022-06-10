@@ -1,4 +1,4 @@
-// Copyright 2022 NNTU-CS
+// Copyright 2022 CheginArtyom
 #ifndef INCLUDE_TREE_H_
 #define INCLUDE_TREE_H_
 
@@ -8,18 +8,18 @@
 
 class Tree {
  private:
-    struct vetka;
-    std::vector<std::string> r;
-    vetka* rod;
+    struct Node;
+    std::vector<std::string> repl;
+    Node* parent;
 
-    void cTree(vetka* rod, std::vector<char> t);
+    void createTree(Node* parent, std::vector<char> trail);
 
-    void perms(vetka* rod, std::string sym);
+    void perms(Node* parent, std::string symb);
 
  public:
     explicit Tree(const std::vector<char>);
 
-    std::string op[] (unsigned int i) const;
+    std::string operator[] (unsigned int i) const;
 };
 
 #endif  // INCLUDE_TREE_H_
