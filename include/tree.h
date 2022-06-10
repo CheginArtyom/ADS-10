@@ -8,18 +8,18 @@
 
 class Tree {
  private:
-    struct Node;
-    std::vector<std::string> repl;
-    Node* parent;
+    struct vetka;
+    std::vector<std::string> r;
+    vetka* rod;
 
-    void createTree(Node* parent, std::vector<char> trail);
+    void cTree(vetka* rod, std::vector<char> t);
 
-    void perms(Node* parent, std::string symb);
+    void perms(vetka* rod, std::string sym);
 
  public:
     explicit Tree(const std::vector<char>);
 
-    std::string operator[] (unsigned int i) const;
+    std::string op[] (unsigned int i) const;
 };
 
 #endif  // INCLUDE_TREE_H_
