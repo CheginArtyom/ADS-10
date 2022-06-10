@@ -12,60 +12,60 @@ std::vector<char> getPerm(const Tree& tree, int n) {
   return permisdone;
 }
 
-struct Tree::vetka {
+struct Tree::Node {
   char nvalue;
-  std::vector<vetka*> child;
+  std::vector<Node*> child;
 };
 
-void Tree::per(vetka* rod, std::string sym = "") {
-  if (!rod->child.size()) {
-    sym += rod->nvalue;
-    r.push_back(sym);
-  }
-  if (rod->nvalue != '*') {
-    sym += rod->nvalue;
-  }
-  for (int i = 0; i < rod->child.size(); i++) {
-    per(rod->child[i], sym);
-  }
-}
-
-void Tree::cTree(vetka* rod, std::vector<char> t) {
-  if (!t.size()) {
+void Tree::createTree(Node* parent, std::vector<char> trail) {
+  if (!trail.size()) {
     return;
   }
-  if (rod->nvalue != '*') {
-    for (auto i = t.begin(); i < t.end(); i++) {
-      if (*i == rod->nvalue) {
-        t.erase(i);
+  if (parent->nvalue != '*') {
+    for (auto i = trail.begin(); i < trail.end(); i++) {
+      if (*i == parent->nvalue) {
+        trail.erase(i);
         break;
       }
     }
   }
-  for (int i = 0; i < t.size(); i++) {
-    rod->child.push_back(new vetka);
+  for (int i = 0; i < trail.size(); i++) {
+    parent->child.push_back(new Node);
   }
-  for (int i = 0; i < rod->child.size(); i++) {
-    rod->child[i]->nvalue = t[i];
+  for (int i = 0; i < parent->child.size(); i++) {
+    parent->child[i]->nvalue = trail[i];
   }
-  for (int i = 0; i < rod->child.size(); i++) {
-    cTree(rod->child[i], t);
+  for (int i = 0; i < parent->child.size(); i++) {
+    createTree(parent->child[i], trail);
+  }
+}
+
+void Tree::perms(Node* parent, std::string symb = "") {
+  if (!parent->child.size()) {
+    symb += parent->nvalue;
+    repl.push_back(symb);
+  }
+  if (parent->nvalue != '*') {
+    symb += parent->nvalue;
+  }
+  for (int i = 0; i < parent->child.size(); i++) {
+    perms(parent->child[i], symb);
   }
 }
 
 Tree::Tree(const std::vector<char> val) {
-  rod = new vetka();
-  rod->nvalue = '*';
-  cTree(rod, val);
-  per(rod);
+  parent = new Node();
+  parent->nvalue = '*';
+  createTree(parent, val);
+  perms(parent);
 }
 
-std::string Tree::op[] (unsigned int i) const {
-  if (i >= r.size()) {
+std::string Tree::operator[] (unsigned int i) const {
+  if (i >= repl.size()) {
     return "";
   }
   if (i < 0) {
     throw std::string("Wrong index!");
   }
-  return r[i];
+  return repl[i];
 }
